@@ -1,6 +1,6 @@
 import type { HttpError, HttpSucess } from "./IHttp.js";
 
-class HttpResponseFactory {
+export class HttpResponseFactory {
   static created<T>(data: T): HttpSucess {
     return {
       statusCode: 201,

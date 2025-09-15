@@ -6,16 +6,17 @@ import {
 
 const prisma = new PrismaClient();
 
-export const userSafeSelect = {
+export const UserSafeSelect = {
   id: true,
   name: true,
   email: true,
   role: true,
   status: true,
   createdAt: true,
+  lastLogin: true,
 };
 
-export const userPublicSelect = {
+export const UserPublicSelect = {
   id: true,
   name: true,
   email: true,
@@ -27,7 +28,7 @@ export class UserModel {
     return await prisma.user.findUnique({
       where: { id },
       select: {
-        ...userPublicSelect,
+        ...UserPublicSelect,
       },
     });
   }
@@ -35,10 +36,16 @@ export class UserModel {
   static async findByEmail(email: string) {
     return await prisma.user.findUnique({
       where: { email },
-      select: { ...userSafeSelect },
+      select: { ...UserSafeSelect },
     });
   }
 
+  static async findAll(filter?: any) {
+    return await prisma.user.findMany({
+      where: filter,
+      select: { ...UserSafeSelect },
+    });
+  }
   static async create(data: {
     name: string;
     email: string;
@@ -54,7 +61,7 @@ export class UserModel {
         role: data.role || UserRole.USER,
         status: data.status || UserStatus.ACTIVE,
       },
-      select: { ...userSafeSelect },
+      select: { ...UserSafeSelect },
     });
   }
 
@@ -71,14 +78,14 @@ export class UserModel {
     return await prisma.user.update({
       where: { id },
       data,
-      select: { ...userSafeSelect },
+      select: { ...UserSafeSelect },
     });
   }
 
   static async delete(id: number) {
     return await prisma.user.delete({
       where: { id },
-      select: { ...userSafeSelect },
+      select: { ...UserSafeSelect },
     });
   }
 }

@@ -16,6 +16,7 @@ model User {
   role         UserRole   @default(USER)
   status       UserStatus @default(ACTIVE)
   createdAt    DateTime   @default(now())
+  lastLogin    DateTime   @default(now())
 
   comment Comment[]
   post    Post[]
